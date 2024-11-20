@@ -216,6 +216,7 @@ class APIHelper:
             return f"Error fetching owned games for user '{user_id}': {e}"
 
     def getSteamIDFromVanity(self, vanity_name, api_key):
+
         url = f"https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/"
         params = {"key": api_key, "vanityurl": vanity_name}
         response = requests.get(url, params=params)

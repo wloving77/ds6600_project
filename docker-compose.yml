@@ -1,37 +1,17 @@
 services:
-  # jupyterlab:
-  #   build:
-  #     dockerfile: Dockerfile
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - "8888:8888"
-  #   volumes:
-  #     - ./project:/project
-  #   networks:
-  #     - containernetwork
-  postgres:
-    image: postgres:latest
+  mysql:
+    image: mysql:latest
     env_file:
-      - .env
+      - ./.env
     ports:
-      - "5432:5432"
+      - "3306:3306"  # MySQL default port
     volumes:
-      - postgresdata:/var/lib/postgresql/data
+      - mysqldata:/var/lib/mysql
+      - ./project/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - containernetwork
-  mongodb:
-    image: mongo:6.0
-    env_file:
-      - .env
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodata:/data/db
-    networks:
-      - containernetwork
+
 volumes:
-  postgresdata:
-  mongodata:
+  mysqldata:  # MySQL data directory volume
 networks:
   containernetwork:
