@@ -1,5 +1,5 @@
 Project SteamSchema {
-  database_type: "PostgreSQL"
+  database_type: "MySQL"
 }
 
 // Games table stores the primary details about games.
