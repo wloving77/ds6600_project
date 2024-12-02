@@ -14,6 +14,7 @@ class MySQLHelper:
         self.database = os.getenv("MYSQL_DATABASE")
         self.user = os.getenv("MYSQL_ROOT_USER")
         self.password = os.getenv("MYSQL_ROOT_PASSWORD")
+        self.port = 3306
         self.connection = None
 
     def connect(self):
@@ -47,13 +48,6 @@ class MySQLHelper:
         else:
             print("No connection to close.")
         self.connection = None
-
-    def reconnect(self):
-        """
-        Reconnect to the database.
-        """
-        self.close()
-        self.connect()
 
     def execute_query(self, query, params=None):
         """

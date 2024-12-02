@@ -1,4 +1,5 @@
 import json
+import platform
 import requests
 import pandas as pd
 import os
@@ -240,10 +241,18 @@ class APIHelper:
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")
 
+        current_os = platform.system()
+
         # Initialize WebDriver with the ChromeDriver path in WSL
-        driver = webdriver.Chrome(
-            service=Service("/usr/bin/chromedriver"), options=options
-        )
+
+        if current_os == "Windows":
+            driver = webdriver.Chrome(
+                service=Service("/usr/bin/chromedriver"), options=options
+            )
+        elif current_os == "Darwin":
+            driver = webdriver.Chrome(
+                service=Service("/opt/homebrew/bin/chromedriver"), options=options
+            )
 
         driver.get(search_url)
 
