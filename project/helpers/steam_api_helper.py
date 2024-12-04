@@ -34,7 +34,11 @@ class APIHelper:
 
     """ Functions to Gather data from Steam API About a Given Game: """
 
-    def getGamePlayerCount(self, app_id, game_title):
+    def getGamePlayerCount(self, game_title):
+        game = self.searchSteamApps(game_title)
+        if not game:
+            return f"Game '{game_title}' not found"
+        app_id = game[0]["id"]
         try:
             player_count_url = f"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={app_id}"
             player_count_response = requests.get(player_count_url)
@@ -56,7 +60,11 @@ class APIHelper:
         except requests.exceptions.RequestException as e:
             return f"Error fetching player count for '{game_title}': {e}"
 
-    def getGameAchievementData(self, app_id, game_title):
+    def getGameAchievementData(self, game_title):
+        game = self.searchSteamApps(game_title)
+        if not game:
+            return f"Game '{game_title}' not found"
+        app_id = game[0]["id"]
         try:
             achievement_url = f"https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?gameid={app_id}"
             achievement_response = requests.get(achievement_url)
@@ -77,7 +85,13 @@ class APIHelper:
         except requests.exceptions.RequestException as e:
             return f"Error fetching achievement data for '{game_title}': {e}"
 
-    def getGameNews(self, app_id, game_title, count=5):
+    def getGameNews(self, game_title, count=5):
+        game = self.searchSteamApps(game_title)
+        if not game:
+            return f"Game '{game_title}' not found"
+        app_id = game[0]["id"]
+        if not app_id:
+            return f"Game '{game_title}' not found"
         try:
             news_url = f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid={app_id}&count={count}"
             response = requests.get(news_url)
