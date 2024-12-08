@@ -254,19 +254,35 @@ class APIHelper:
 
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")
+        options.add_argument("--no-sandbox")  # Bypass the sandbox for Chrome
+        options.add_argument(
+            "--disable-dev-shm-usage"
+        )  # Prevent crashes due to shared memory issues
+        options.add_argument(
+            "--disable-gpu"
+        )  # Disable GPU acceleration (optional but often helps)
+        options.add_argument("--remote-debugging-port=9222")  # Enable remote debugging
+        options.add_argument(
+            "--disable-software-rasterizer"
+        )  # Software rasterizer for headless environments
+        options.add_argument("--disable-extensions")  # Disable extensions for stability
 
         current_os = platform.system()
 
         # Initialize WebDriver with the ChromeDriver path in WSL
 
-        if current_os == "Windows":
-            driver = webdriver.Chrome(
-                service=Service("/usr/bin/chromedriver"), options=options
-            )
-        elif current_os == "Darwin":
-            driver = webdriver.Chrome(
-                service=Service("/opt/homebrew/bin/chromedriver"), options=options
-            )
+        # if current_os == "Windows":
+        #     driver = webdriver.Chrome(
+        #         service=Service("/usr/bin/chromedriver"), options=options
+        #     )
+        # elif current_os == "Darwin":
+        #     driver = webdriver.Chrome(
+        #         service=Service("/opt/homebrew/bin/chromedriver"), options=options
+        #     )
+
+        driver = webdriver.Chrome(
+            service=Service("/usr/bin/chromedriver"), options=options
+        )
 
         driver.get(search_url)
 

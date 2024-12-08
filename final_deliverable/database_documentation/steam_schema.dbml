@@ -1,0 +1,100 @@
+Project SteamSchema {
+  database_type: "MySQL"
+}
+
+// Games table stores the primary details about games.
+Table Games {
+  id              int [primary key] // Steam App ID
+  name            varchar
+  type            varchar
+  price_initial   int // Price in the smallest currency unit (e.g., cents)
+  price_final     int
+  currency        varchar
+  tiny_image      varchar
+  metascore       int
+  platforms_windows boolean
+  platforms_mac    boolean
+  platforms_linux  boolean
+  streamingvideo   boolean
+  controller_support varchar
+
+  indexes {
+    id [unique]
+  }
+}
+
+// Achievements table stores achievements for each game.
+Table Achievements {
+  id              serial [primary key]
+  app_id          int [not null, ref: > Games.id]
+  name            varchar
+  percent         float
+
+  indexes {
+    app_id
+  }
+}
+
+// PlayerCounts table stores player count information for each game.
+Table PlayerCounts {
+  id                serial [primary key]
+  app_id            int [not null, ref: > Games.id]
+  current_player_count int
+
+  indexes {
+    app_id
+  }
+}
+
+// Users table stores information about users.
+Table Users {
+  id              varchar [primary key] // User's profile ID
+  display_name    varchar
+  profile_url     varchar
+
+  indexes {
+    id [unique]
+  }
+}
+
+// UserOwnedGames table stores games owned by a user.
+Table UserOwnedGames {
+  id              serial [primary key]
+  user_id         varchar [not null, ref: > Users.id]
+  app_id          int [not null, ref: > Games.id]
+  playtime_forever int // Total playtime in minutes
+  playtime_2weeks  int // Playtime in the last two weeks (minutes)
+
+  indexes {
+    user_id
+    app_id
+  }
+}
+
+// UserGameStatistics table stores per-game statistics for users.
+Table UserGameStatistics {
+  id              serial [primary key]
+  user_id         varchar [not null, ref: > Users.id]
+  app_id          int [not null, ref: > Games.id]
+  stat_name       varchar
+  stat_value      int
+
+  indexes {
+    user_id
+    app_id
+  }
+}
+
+// UserAchievementStatistics table stores user achievements for games.
+Table UserAchievementStatistics {
+  id              serial [primary key]
+  user_id         varchar [not null, ref: > Users.id]
+  app_id          int [not null, ref: > Games.id]
+  achievement_name varchar
+  achieved        boolean // Whether the achievement is achieved (1 or 0)
+
+  indexes {
+    user_id
+    app_id
+  }
+}

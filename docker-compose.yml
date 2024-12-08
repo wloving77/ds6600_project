@@ -1,4 +1,14 @@
 services:
+  dashy:
+      build:  # Specify that the image will be built using the Dockerfile
+        context: .
+        dockerfile: Dockerfile
+      env_file:
+        - ./.env
+      ports:
+        - "8050:8050"
+      networks:
+        - containernetwork
   mysql:
     image: mysql:latest
     env_file:
