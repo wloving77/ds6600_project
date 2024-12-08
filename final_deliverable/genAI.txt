@@ -1,0 +1,1 @@
+I used generative AI in codeium for aid in writing clean and error resistant code as well as ChatGPT-4o occasionally for help generating ideas and debugging strange problems. The AI was an incredibly useful and beneficial aid with this project.
